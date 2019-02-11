@@ -7,15 +7,14 @@
 //
 
 import XCTest
-
+@testable import iTunes_Search
 class SearchResultControllerTests: XCTestCase {
-
+    
     /**
      What shall we test?
      
      - Does decoding work when given good data
      - Does decoding fail when given bad data
-     - Does it build the correct URL?
      - Does it build the correct URLRequest?
      - Are results correctly saved into the property
      - Is the completion handler called if the networking fails
@@ -24,5 +23,45 @@ class SearchResultControllerTests: XCTestCase {
      
      **/
     
-
+    func testForSomeResults() {
+        let src = SearchResultController()
+        
+        let expect = expectation(description: "Wait for results")
+        src.performSearch(for: "Elevate", resultType: .software) {
+            // XCTFail()
+            // ^^This cause every test to fail... I think^^
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 2)
+        XCTAssertTrue(src.searchResults.count > 0, "Expecting at least 1 result when searching for 'Elevate'")
+    }
+    
+    func testDecodingFailsForBadData() {
+        
+    }
+    
+    func testForNoResults() {
+        
+    }
+    
+    func testCorrectlyConstructedURLRequest() {
+        
+    }
+    
+    func testResultsSavedInToProperty() {
+        
+    }
+    
+    func testCompletionForFailedNetworking() {
+        
+    }
+    
+    func testCompletionForBadData() {
+        
+    }
+    
+    func testCompletionForGoodData() {
+        
+    }
+    
 }

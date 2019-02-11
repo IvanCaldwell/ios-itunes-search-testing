@@ -8,6 +8,20 @@
 
 import XCTest
 @testable import iTunes_Search
+
+
+class MockDataLoader: NetworkDataLoader {
+    var request: URLRequest?
+    var data: Data?
+    var error: Error?
+    
+    func loadData (with request: URLRequest, completion: @escaping(Data?, Error?) -> Void {
+        self.request = request
+        DispatchQueue.main.async {
+        completion(self.data, self.error)
+        }
+    }
+}
 class SearchResultControllerTests: XCTestCase {
     
     /**
@@ -24,7 +38,9 @@ class SearchResultControllerTests: XCTestCase {
      **/
     
     func testForSomeResults() {
-        let src = SearchResultController()
+        let mock = MockDataLoader()
+        
+        //let src = SearchResultController()
         
         let expect = expectation(description: "Wait for results")
         src.performSearch(for: "Elevate", resultType: .software) {
